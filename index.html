@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <div>
+      <label for="email">Correo destino</label>
+      <input type="email" name="" id="email">
+    </div>
+    <div>
+      <label for="mensaje">Mesaje</label>
+      <input type="text" id="mensaje">
+    </div>
+
+    <div>
+      <label for="asunto">Asunto</label>
+      <input type="text" id="asunto">
+    </div>
+
+    <button type="button" id="enviar">Enviar mensaje</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded",() =>{
+        const email = document.querySelector("#email");
+        const asunto = document.querySelector("#asunto");
+        const mensaje = document.querySelector("#mensaje");
+        const enviar = document.querySelector("#enviar");
+
+        enviar.addEventListener("click", ()=>{
+          const parametros = new URLSearchParams();
+          parametros.append("operacion","enviarcorreo");
+          parametros.append("correodestino", email.value);
+          parametros.append("asunto", asunto.value);
+          parametros.append("mensaje", mensaje.value);
+
+          fetch(`./controller/correo.controller.php`,{
+            method:"POST",
+            body: parametros
+          })
+            .then(respuesta => respuesta.json())
+            .then(datos => {
+              console.log(datos)
+            });
+        });
+      });
+    </script>
+</body>
+</html>
